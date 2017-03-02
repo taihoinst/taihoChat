@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="./stylesheets/common.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script>
+    $(document).ready(function () {
+        var socket = io.connect("http://localhost:3000");
+
+        socket.on('connect', function () {
+            console.log("connection success");
+        });
+
+        socket.on('disconnect', function () {
+            console.log("connection end");
+        });
+
+        $('#send').click(function () {
+            var text = '';
+            text += '<li class="message left appeared">';
+            text += '<div class="avatar"></div>';
+            text += '<div class="text_wrapper">';
+            text += '<div class="text">' + $('#msg').val() + '</div>';
+            text += '</div></li>';
+
+            $('.messages').append(text);
+
+            var data = { recepient: "client", text: $('#msg').val() };
+            socket.emit('message', data);
+        });
+
+        socket.on('response', function (response) {
+            var res = '';
+            res += '<li class="message right appeared">';
+            res += '<div class="avatar"></div>';
+            res += '<div class="text_wrapper">';
+            res += '<div class="text">' + response.text + '</div>';
+            res += '</div></li>';
+
+            $('.messages').append(res);
+
+            $(".messages").scrollTop($(".messages")[0].scrollHeight);
+        });
+    });
+
+</script>
+
+</head>
+<body>
+    <div class="chat_window">
+        <div class="top_menu">
+            <div class="buttons">
+            <div class="button close"></div>
+            <div class="button minimize"></div>
+            <div class="button maximize"></div></div>
+            <div class="title">Weather Chat</div></div>
+            <ul class="messages">
+            </ul>
+            <div class="bottom_wrapper clearfix">
+                <div class="message_input_wrapper">
+                    <input class="message_input" placeholder="Type your message here..." id="msg"/>
+                </div>
+                <div class="send_message">
+                    <div class="icon"></div>
+                    <div class="text" id="send">Send</div>
+                </div>
+            </div>
+    </div>
+</body>
+</html>

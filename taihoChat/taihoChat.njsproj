@@ -31,9 +31,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
+    <Content Include="public\javascripts\sockjs.js" />
+    <Content Include="public\javascripts\sockjs-1.0.3.js" />
     <Compile Include="routes\index.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="public\clientChat.html" />
     <Content Include="public\javascripts\bootstrap.js" />
     <Content Include="public\javascripts\bootstrap.min.js" />
     <Content Include="public\javascripts\jquery-1.10.2.intellisense.js" />
@@ -54,8 +57,11 @@
     <Content Include="public\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="public\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="public\javascripts\jquery-1.10.2.min.map" />
+    <Content Include="public\serverChat.html" />
     <Content Include="public\stylesheets\bootstrap.css" />
     <Content Include="public\stylesheets\bootstrap.min.css" />
+    <Content Include="public\stylesheets\common.css" />
+    <Content Include="public\stylesheets\commonServer.css" />
     <Content Include="public\stylesheets\style.styl" />
     <Content Include="README.md" />
     <Content Include="typings.json" />

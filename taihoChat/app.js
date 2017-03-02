@@ -7,11 +7,12 @@ var express = require('express');
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
+var socketio = require("socket.io");
 
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -29,9 +30,31 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+/*
+app.get("/", function (req, res) {
+    res.sendfile(__dirname + "/clientChat.html");
+});
+*/
+
 app.get('/about', routes.about);
 app.get('/contact', routes.contact);
 
-http.createServer(app).listen(app.get('port'), function () {
+var server = http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
+});
+
+var io = socketio.listen(server);
+console.log('socket.io 요청준비 완료');
+
+io.sockets.on('connection', function(socket) {
+    console.log('connection info : ', socket.request.connection._peername);
+
+    socket.on('message', function (message) {
+        //console.log('message : ', message.recepient);
+
+        if (message.recepient == 'client') {
+            console.log('admin');
+        }
+        socket.broadcast.emit('response', message);
+    });
 });
