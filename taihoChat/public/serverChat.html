@@ -43,11 +43,21 @@
             $('.messages').append(res);
             $('.messages2').html('');
 
-            if (response.result != '') {
-                var rslt = '<li class="message left appeared">';
+            if (response.js != '') {
+                var rslt = '';
+                var json = response.js;
+
+                for (var i = 0 ; i < json.length; i++) {
+                    rslt += '<li class="message left appeared">';
+                    rslt += '<div class="text_wrapper">';
+                    rslt += '<div class="text">' + json[i].result + '</div>';
+                    rslt += '</div></li>';
+                }
+
+/*                var rslt = '<li class="message left appeared">';
                 rslt += '<div class="text_wrapper">';
-                rslt += '<div class="text">' + response.result + '</div>';
-                rslt += '</div></li>';
+                rslt += '<div class="text">' + response.result1 + '</div>';
+                rslt += '</div></li>';*/
 
                 $('.messages2').append(rslt);
             }

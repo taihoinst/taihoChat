@@ -51,10 +51,11 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('message', function (message) {
         //console.log('message : ', message.recepient);
-
+        var jsArray;
         if (message.recepient == 'client') {
             console.log('admin');
-            message.result = 'test' + (i++);
+            jsArray = [{ result: 'test' + (i++) }, { result: 'test' + (i++) }, { result: 'test' + (i++) }];
+            message.js = jsArray;
         }
         socket.broadcast.emit('response', message);
     });
