@@ -33,6 +33,7 @@
     <Compile Include="app.js" />
     <Content Include="public\javascripts\sockjs.js" />
     <Content Include="public\javascripts\sockjs-1.0.3.js" />
+    <Compile Include="routes\ajax.js" />
     <Compile Include="routes\index.js" />
   </ItemGroup>
   <ItemGroup>
