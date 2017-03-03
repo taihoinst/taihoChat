@@ -41,6 +41,16 @@
             res += '</div></li>';
 
             $('.messages').append(res);
+            $('.messages2').html('');
+
+            if (response.result != '') {
+                var rslt = '<li class="message left appeared">';
+                rslt += '<div class="text_wrapper">';
+                rslt += '<div class="text">' + response.result + '</div>';
+                rslt += '</div></li>';
+
+                $('.messages2').append(rslt);
+            }
 
             $(".messages").scrollTop($(".messages")[0].scrollHeight);
         });
@@ -69,12 +79,7 @@
     </div>
 
     <div class="chat_window2">
-        <ul class="messages">
-            <li class="message left appeared">
-                <div class="text_wrapper">
-                    <div class="text">wefwefew</div>
-                </div>
-            </li>
+        <ul class="messages2">
         </ul>
     </div>
 

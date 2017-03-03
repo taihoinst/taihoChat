@@ -42,7 +42,7 @@ app.get('/contact', routes.contact);
 var server = http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
-
+var i = 0;
 var io = socketio.listen(server);
 console.log('socket.io 요청준비 완료');
 
@@ -54,6 +54,7 @@ io.sockets.on('connection', function(socket) {
 
         if (message.recepient == 'client') {
             console.log('admin');
+            message.result = 'test' + (i++);
         }
         socket.broadcast.emit('response', message);
     });
