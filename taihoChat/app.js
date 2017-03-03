@@ -8,6 +8,8 @@ var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 var socketio = require("socket.io");
+var chatServer = require("./routes/ajax");
+
 
 var app = express();
 
@@ -46,17 +48,25 @@ var i = 0;
 var io = socketio.listen(server);
 console.log('socket.io 요청준비 완료');
 
+
+//console.log('query : '+chatServer.ajax.query);
+
 io.sockets.on('connection', function(socket) {
     console.log('connection info : ', socket.request.connection._peername);
 
     socket.on('message', function (message) {
-        //console.log('message : ', message.recepient);
+        console.log('message : ', message.recepient);
         var jsArray;
         if (message.recepient == 'client') {
             console.log('admin');
             jsArray = [{ result: 'test' + (i++) }, { result: 'test' + (i++) }, { result: 'test' + (i++) }];
             message.js = jsArray;
+        } else if (message.recepient == 'admin') {
+
+            console.log('client input');
+
         }
+        console.log(message);
         socket.broadcast.emit('response', message);
     });
 });

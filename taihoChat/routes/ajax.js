@@ -1,5 +1,5 @@
 ﻿var request = require('request');
-var weatherClient = require('../wunderground-client');
+
 
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;  
@@ -94,7 +94,7 @@ exports.ajax = function(req, res){
 					jsonArray.push(obj);
 					console.log(result);
 					console.log(jsonArray);
-					//res.send(jsonArray);
+					res.send(jsonArray);
 					result = "";
 				});
 				requests.on('done', function(rowCount, more) {  
