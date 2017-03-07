@@ -18,6 +18,14 @@
             console.log("connection end");
         });
 
+        $("#msg").keydown(function (key) {
+            if (key.keyCode == 13) {
+                //sendMsg();
+                $('#send').click();
+            }
+        });
+
+
         $('#send').click(function () {
             var text = '';
             text += '<li class="message left appeared">';
@@ -30,6 +38,7 @@
 
             var data = { recepient: "client", text: $('#msg').val() };
             socket.emit('message', data);
+            $('#msg').val('');
         });
 
         socket.on('response', function (response) {
@@ -44,6 +53,7 @@
 
             $(".messages").scrollTop($(".messages")[0].scrollHeight);
         });
+       
     });
 
 </script>

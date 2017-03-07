@@ -4,7 +4,8 @@
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;  
 var TYPES = require('tedious').TYPES; 
-var query ="";
+var query = "";
+var param = "";
 
 var config = {
 		server:'faxtimedb.database.windows.net',
@@ -15,7 +16,8 @@ var config = {
 
 
 exports.ajax = function(req, res){
-	console.log('req:' + req.body.msg);
+    //console.log('req:' + req.body.msg);
+    console.log('req:' + req);
 	var resText;
 	var headers = {
 		    'User-Agent':       'Super Agent/0.0.1',
@@ -27,7 +29,8 @@ exports.ajax = function(req, res){
 		    url: 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/730c08f0-b505-4b19-96f8-5e9ea43bab54?subscription-key=fcdf50084bfd4a698e01e05852e73126',
 		    method: 'GET',
 		    headers: headers,
-		    qs: {'q': req.body.msg}
+            //qs: { 'q': req.body.msg }
+            qs: { 'q': req }
 		}
 	
 	request(options, function (error, response, body) {
@@ -35,7 +38,7 @@ exports.ajax = function(req, res){
 	        // Print out the response body
 	        console.log(JSON.stringify(body));
 	        var obj = JSON.parse(body);
-	        var param = "";
+	        
 	        var matchCnt = 0;
 	        
 	        console.log('INTENT : '+obj.topScoringIntent.intent);
@@ -49,7 +52,22 @@ exports.ajax = function(req, res){
 	        
 	        console.log('param : '+param.substr(0, param.length -1));
 
-	        
+
+            query += "select                                        						";
+            query += "		Rely.AnswerSN,                          						";
+            query += "		count(Rely.AnswerSN) AS CNT ,           						";
+            query += "		min(Ans.AnswerValue) AS ANSWERVALUE,							";
+            query += "		(convert(float,(count(Rely.AnswerSN)))/" + matchCnt + ")*100 PER	";
+            query += "  from RelationList Rely, AnswerList Ans, EntityList Ent      		";
+            query += "  where Ent.EntityValue in (" + param.substr(0, param.length - 1) + ") 	";
+            query += "    and rely.AnswerSN = Ans.AnswerSN          						";
+            query += "    and rely.EntitySN = Ent.EntitySN          						";
+            query += "  group by Rely.AnswerSN                      						";
+            query += "  having (count(Rely.AnswerSN)) >= 2                     				";
+            query += "  order by CNT desc;													";
+
+            console.log('query : ' + query);
+
 	        
 	        var connection = new Connection(config);
 	        connection.on('connect', function(err){
@@ -57,32 +75,24 @@ exports.ajax = function(req, res){
 	        	executeStatement(); 
 	        });
 			
-				query += "select                                        						";
-				query += "		Rely.AnswerSN,                          						";
-				query += "		count(Rely.AnswerSN) AS CNT ,           						";
-				query += "		min(Ans.AnswerValue) AS ANSWERVALUE,							";
-				query += "		(convert(float,(count(Rely.AnswerSN)))/"+matchCnt+")*100 PER	";
-				query += "  from RelationList Rely, AnswerList Ans, EntityList Ent      		";
-				query += "  where Ent.EntityValue in ("+param.substr(0, param.length -1)+") 	";
-				query += "    and rely.AnswerSN = Ans.AnswerSN          						";
-				query += "    and rely.EntitySN = Ent.EntitySN          						";
-				query += "  group by Rely.AnswerSN                      						";
-				query += "  having (count(Rely.AnswerSN)) >= 2                     				";
-				query += "  order by CNT desc;													";
 				
-				
-			function executeStatement(){
+            function executeStatement() {
+                console.log('11');
 				var requests = new Request(query , function(err){
 					if(err){
 						console.log('ERROR : '+ err);
 					}
 				});
-				
+
+                console.log('22');
+
 				var result = "";
 				var jsonArray = [];
-				requests.on('row', function(columns){
+                requests.on('row', function (columns) {
+                    console.log('33');
 					var obj = {};
-					columns.forEach(function(column){
+                    columns.forEach(function (column) {
+                        console.log('44');
 						if(column.value === null){
 							console.log('NULL');
 						}else{
