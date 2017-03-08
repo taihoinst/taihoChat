@@ -36,6 +36,7 @@
             var data = { recepient: "admin", text: $('#msg').val() };
             socket.emit('message', data);
             $('#msg').val('');
+            $('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
         });
 
         socket.on('response', function (response) {
@@ -60,15 +61,11 @@
                     rslt += '</div></li>';
                 }
 
-/*                var rslt = '<li class="message left appeared">';
-                rslt += '<div class="text_wrapper">';
-                rslt += '<div class="text">' + response.result1 + '</div>';
-                rslt += '</div></li>';*/
-
                 $('.messages2').append(rslt);
             }
 
             $(".messages").scrollTop($(".messages")[0].scrollHeight);
+            $('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
         });
     });
 </script>
@@ -80,7 +77,7 @@
             <div class="button close"></div>
             <div class="button minimize"></div>
             <div class="button maximize"></div></div>
-            <div class="title">Weather Chat</div></div>
+            <div class="title"> 공인인증서 FAQ Chat</div></div>
             <ul class="messages">
             </ul>
             <div class="bottom_wrapper clearfix">

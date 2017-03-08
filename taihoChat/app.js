@@ -61,47 +61,28 @@ io.sockets.on('connection', function(socket) {
         if (message.recepient == 'client') {
             console.log('client input : ' + message.text);
 
-            //console.log('chatServer : ' + chatServer.ajax(message.text));
-
             chatServer(message.text, function (err, results) {
+            console.log('server server : ' + Object.keys(results).length);
 
-                console.log('server server : ' + Object.keys(results).length);
-
-                //console.log('#############################################');
-                //console.log(results[0].ANSWERVALUE);
-                //console.log(results[0].PER);
-                //console.log('#############################################');
-
-                var resultJson = [];
+            var resultJson = [];
+            var obj = {};
+            for (var n = 0; n < Object.keys(results).length; n++) {
                 var obj = {};
-                for (var n = 0; n < Object.keys(results).length; n++) {
-                    var obj = {};
-                    //resultJson = {
-                    //    result: results[n].PER + ' % ' + results[n].ANSWERVALUE
-                    //},;
-                    //resultJson = resultJson + { "result": + results[n].PER + "% " + results[n].ANSWERVALUE };
-                    //resultJson = resultJson + ",";
-
-                    console.log('['+n+'] : '+ results[n].PER + "% " + results[n].ANSWERVALUE);
-                    obj["result"] = results[n].PER + "% " + results[n].ANSWERVALUE;
-                    resultJson.push(obj);    
-                };
+                console.log('['+n+'] : '+ results[n].PER + "% " + results[n].ANSWERVALUE);
+                obj["result"] = results[n].PER + "% " + results[n].ANSWERVALUE;
+                resultJson.push(obj);    
+            };
                 
-                console.log(resultJson);
-                message.js = resultJson;
-                socket.broadcast.emit('response', message);
-               // resultJson = "";
+            console.log(resultJson);
+            message.js = resultJson;
+            socket.broadcast.emit('response', message);
             });
-            //jsArray = [{ result: 'test' + (i++) }, { result: 'test' + (i++) }, { result: 'test' + (i++) }];
-            //message.js = jsArray;
+
         } else if (message.recepient == 'admin') {
 
             console.log('server send');
             socket.broadcast.emit('response', message);
 
         }
-        //console.log('MESSAGE ZZZZ : '+message);
-        
-       
     });
 });
