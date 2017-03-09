@@ -36,7 +36,8 @@
             var data = { recepient: "admin", text: $('#msg').val() };
             socket.emit('message', data);
             $('#msg').val('');
-            $('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+            $(".messages").scrollTop($(".messages")[0].scrollHeight);
+            //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
         });
 
         socket.on('response', function (response) {
@@ -55,17 +56,32 @@
                 var json = response.js;
 
                 for (var i = 0 ; i < json.length; i++) {
+
+                    var persentTemp = json[i].result.split('% ')[0];
+                    var persent = persentTemp.indexOf('.') != -1 ? parseFloat(persentTemp).toFixed(2) : persentTemp + ".00";
+                    var contents = json[i].result.split('% ')[1];
+
                     rslt += '<li class="message left appeared">';
-                    rslt += '<div class="text_wrapper">';
-                    rslt += '<div class="text">' + json[i].result + '</div>';
-                    rslt += '</div></li>';
+                    rslt += '<div class="text_wrapper" style="float:left;">';
+                    rslt += '<div class="text">' + contents + '</div>';
+                    rslt += '<br/>';
+                    rslt += '<div class="myProgress">';
+                    rslt += ' <div class="myBar" style="width : ' + persent + '%">' + persent + ' %</div>';
+                    rslt += '</div></div></li>';
                 }
 
                 $('.messages2').append(rslt);
             }
 
             $(".messages").scrollTop($(".messages")[0].scrollHeight);
-            $('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+            //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+
+
+            //답변List 클릭시 채팅입력란에 넣기
+            $('.text_wrapper').click(function () {
+                $('#msg').val($(this).find('.text').text().trim()).focus();
+            });
+
         });
     });
 </script>

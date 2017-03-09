@@ -295,3 +295,30 @@ body {
   font-size: 18px;
   font-weight: 300;
 }
+
+.myProgress {
+    border-radius:10px;
+    position: relative;
+    width: 100%;
+    height: 22px;
+    background-color: gainsboro;
+    -webkit-box-shadow: inset 5px 5px 8px rgba(255,255,255,1), inset 5px -5px 8px rgba(0,0,0,0.5), 2px 2px 3px rgba(0,0,0,0.3);
+    -moz-box-shadow: inset 5px 5px 8px rgba(255,255,255,1), inset 5px -5px 8px rgba(0,0,0,0.5), 2px 2px 3px rgba(0,0,0,0.3);
+    box-shadow: inset 5px 5px 8px rgba(255,255,255,1), inset 5px -5px 8px rgba(0,0,0,0.5), 2px 2px 3px rgba(0,0,0,0.3);
+}
+.myBar {
+    border-radius:10px;
+    position: absolute;
+    width: 1%;
+    height: 100%;
+    background-color: orange;
+    -webkit-box-shadow: inset 5px 5px 8px rgba(255,255,255,1), inset 5px -5px 8px rgba(0,0,0,0.5);
+    -moz-box-shadow: inset 5px 5px 8px rgba(255,255,255,1), inset 5px -5px 8px rgba(0,0,0,0.5);
+    box-shadow: inset 5px 5px 8px rgba(255,255,255,1), inset 5px -5px 8px rgba(0,0,0,0.5);
+}
+
+#container {
+  margin: 20px;
+  width: 400px;
+  height: 8px;
+}
