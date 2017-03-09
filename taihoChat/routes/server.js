@@ -32,10 +32,9 @@ var config = {
             qs: { 'q': req }
            }
 	
-	request(options, function (error, response, body) {
+	request(options, function (error, response, body) {    
 	        if (!error && response.statusCode == 200) {
 	            // Print out the response body
-	            //console.log('?????????????? : '+JSON.stringify(body));
 	            var obj = JSON.parse(body);
 	        
 	            console.log('INTENT : '+obj.topScoringIntent.intent);
