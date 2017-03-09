@@ -60,7 +60,7 @@ var config = {
                 query += "    and rely.AnswerSN = Ans.AnswerSN          						    ";
                 query += "    and rely.EntitySN = Ent.EntitySN          						    ";
                 query += "  group by Rely.AnswerSN                      						    ";
-                query += "  having (count(Rely.AnswerSN)) >= 2                     				    ";
+                //query += "  having (count(Rely.AnswerSN)) >= 2                     				    ";
                 query += "  order by count(Rely.AnswerSN) desc;										";
 
                 console.log('query : ' + query);
