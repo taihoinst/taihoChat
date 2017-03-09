@@ -41,8 +41,8 @@ var config = {
 	            for(var i = 0; i < Object.keys(obj.entities).length; i++)
 	            {
 	        	    console.log('entity [ '+i+' ] '+obj.entities[i].entity);
-	        	    console.log('entity [ '+i+' ] '+obj.entities[i].type);
-	        	    param += "'"+obj.entities[i].type+"',";
+	        	    console.log('entity [ '+i+' ] '+obj.entities[i].type.split("::")[1]);
+                    param += "'" + obj.entities[i].type.split("::")[1]+"',";
 	        	    matchCnt++;
                 }
 
