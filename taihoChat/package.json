@@ -6,6 +6,7 @@
   "author": {
     "name": "songhj"
   },
+  "scripts": { "node app"},
   "dependencies": {
     "ejs": "2.5.6",
     "express": "3.4.4",
