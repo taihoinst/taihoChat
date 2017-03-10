@@ -9,19 +9,20 @@ var http = require('http');
 var path = require('path');
 var socketio = require("socket.io");
 var chatServer = require("./routes/server");
-
+var fs = require('fs');
 
 
 var app = express();
 
 // all environments
 app.set('port', 3000);
-app.set('views', path.join(__dirname, 'views'));   
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
@@ -41,7 +42,20 @@ app.get("/", function (req, res) {
 
 app.get('/about', routes.about);
 app.get('/contact', routes.contact);
+app.post('/upload', function (req, res) {
+    fs.readFile(req.files.uploadFile.path, function (error, data) {
 
+        var filePath = __dirname + "\\public\\uploadfile\\" + req.files.uploadFile.name;
+        console.log('파일 경로 : ' + filePath);
+        fs.writeFile(filePath, data, function (error) {
+            if (error) {
+                throw err;
+            } else {
+                res.send(filePath);
+            }
+        });
+    });
+});
 var server = http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
@@ -52,7 +66,7 @@ console.log('socket.io 요청준비 완료');
 
 //console.log('query : '+chatServer.ajax.query);
 
-io.sockets.on('connection', function(socket) {
+io.sockets.on('connection', function (socket) {
     console.log('connection info : ', socket.request.connection._peername);
 
     socket.on('message', function (message) {
@@ -62,20 +76,20 @@ io.sockets.on('connection', function(socket) {
             console.log('client input : ' + message.text);
 
             chatServer(message.text, function (err, results) {
-            console.log('server server : ' + Object.keys(results).length);
+                console.log('server server : ' + Object.keys(results).length);
 
-            var resultJson = [];
-            var obj = {};
-            for (var n = 0; n < Object.keys(results).length; n++) {
+                var resultJson = [];
                 var obj = {};
-                console.log('['+n+'] : '+ results[n].PER + "% " + results[n].ANSWERVALUE);
-                obj["result"] = results[n].PER + "% " + results[n].ANSWERVALUE;
-                resultJson.push(obj);    
-            };
-                
-            console.log(resultJson);
-            message.js = resultJson;
-            socket.broadcast.emit('response', message);
+                for (var n = 0; n < Object.keys(results).length; n++) {
+                    var obj = {};
+                    console.log('[' + n + '] : ' + results[n].PER + "% " + results[n].ANSWERVALUE);
+                    obj["result"] = results[n].PER + "% " + results[n].ANSWERVALUE;
+                    resultJson.push(obj);
+                };
+
+                console.log(resultJson);
+                message.js = resultJson;
+                socket.broadcast.emit('response', message);
             });
 
         } else if (message.recepient == 'admin') {

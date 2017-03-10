@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="./stylesheets/common.css" />
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script>
-<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-<script>
+    <meta charset="EUC-KR">
+    <title>Insert title here</title>
+    <link rel="stylesheet" type="text/css" href="./stylesheets/common.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script>
     $(document).ready(function () {
         var socket = io.connect("http://localhost:3000");
 
@@ -56,31 +56,80 @@
             $(".messages").scrollTop($(".messages")[0].scrollHeight);
             //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
         });
-       
+
+        $('#imgSend').click(function () {
+            if ($('#uploadFile').val() == '') {
+                return;
+            }
+            var formData = null;
+            var brawoser = false;
+            if (navigator.aapName == "Microsoft Internet Explorer") {
+                brawoser = true;
+            }
+            if (brawoser) {
+
+            } else {
+                formData = new FormData(document.getElementsByName("dataform")[0]);
+                $.ajax({
+                    type : "post",
+                    url: "/upload",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        console.log(data);
+                        var res = '';
+                        res += '<li class="message left appeared">';
+                        res += '<div class="avatar"></div>';
+                        res += '<div class="text_wrapper">';
+                        res += '<div class="text"><img src="'+data.split('public')[1]+'" style="width:80%;height:80%;"/></div>';
+                        res += '</div></li>';
+
+                        $('.messages').append(res);
+
+                        $(".messages").scrollTop($(".messages")[0].scrollHeight);
+                        var data = { recepient: "client", text: '<img src="' + data.split('public')[1] + '" style="width:80%;height:80%;"/>' };
+                        socket.emit('message', data);
+                        $('#uploadFile').val('');
+                    },
+                    error: function(err){
+                        console.log("error !! : " + err);
+                }
+                });
+            }
+        });
+
     });
 
-</script>
+    </script>
 
 </head>
 <body>
     <div class="chat_window">
         <div class="top_menu">
             <div class="buttons">
-            <div class="button close"></div>
-            <div class="button minimize"></div>
-            <div class="button maximize"></div></div>
-            <div class="title"> FAQ Chat</div></div>
-            <ul class="messages">
-            </ul>
-            <div class="bottom_wrapper clearfix">
-                <div class="message_input_wrapper">
-                    <input class="message_input" placeholder="Type your message here..." id="msg"/>
-                </div>
-                <div class="send_message">
-                    <div class="icon"></div>
-                    <div class="text" id="send">Send</div>
-                </div>
+                <div class="button close"></div>
+                <div class="button minimize"></div>
+                <div class="button maximize"></div>
             </div>
+            <div class="title">공인인증서 FAQ Chat</div>
+        </div>
+        <ul class="messages"></ul>
+        <div class="bottom_wrapper clearfix">
+            <div class="message_input_wrapper">
+                <input class="message_input" placeholder="Type your message here..." id="msg" />
+            </div>
+            <div class="send_message">
+                <div class="icon"></div>
+                <div class="text" id="send">Send</div>
+            </div>
+            <form id="dataform" name="dataform" action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" id="uploadFile" name="uploadFile" />
+                <input type="submit" name="Upload" value="upload" />
+                <input type="button" id="imgSend" name="imgSend" value="imgSend" />
+                <iframe id="uploadFrame" name="uploadFrame" style="display:none; visibility:hidden;" />
+            </form>
+        </div>
     </div>
 </body>
 </html>
