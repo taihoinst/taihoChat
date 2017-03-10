@@ -81,6 +81,7 @@
             //답변List 클릭시 채팅입력란에 넣기
             $('.text_wrapper').click(function () {
                 $('#msg').val($(this).find('.text').text().trim()).focus();
+                $('#send').click();
             });
 
         });

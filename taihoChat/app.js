@@ -56,7 +56,7 @@ app.post('/upload', function (req, res) {
         });
     });
 });
-var server = http.createServer(app).listen(app.get('port'), function () {
+var server = http.createServer(app).listen(app.get('port')||process.env.PORT, function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
 var i = 0;
