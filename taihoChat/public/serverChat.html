@@ -38,6 +38,7 @@
             $('#msg').val('');
             $(".messages").scrollTop($(".messages")[0].scrollHeight);
             //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+            //$("#msg2").empty();
         });
 
         socket.on('response', function (response) {
@@ -108,7 +109,7 @@
     </div>
 
     <div class="chat_window2">
-        <ul class="messages2">
+        <ul class="messages2" id="msg2">
         </ul>
     </div>
 
