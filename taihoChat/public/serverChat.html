@@ -85,6 +85,49 @@
             });
 
         });
+
+        $('#imgSend').click(function () {
+            if ($('#uploadFile').val() == '') {
+                return;
+            }
+            var formData = null;
+            var brawoser = false;
+            if (navigator.aapName == "Microsoft Internet Explorer") {
+                brawoser = true;
+            }
+            if (brawoser) {
+
+            } else {
+                formData = new FormData(document.getElementsByName("dataform")[0]);
+                $.ajax({
+                    type: "post",
+                    url: "/upload",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        console.log(data);
+                        var res = '';
+                        res += '<li class="message left appeared">';
+                        res += '<div class="avatar"></div>';
+                        res += '<div class="text_wrapper">';
+                        res += '<div class="text"><img src="' + data.split('public')[1] + '" style="width:80%;height:80%;"/></div>';
+                        res += '</div></li>';
+
+                        $('.messages').append(res);
+
+                        $(".messages").scrollTop($(".messages")[0].scrollHeight);
+                        var data = { recepient: "client", text: '<img src="' + data.split('public')[1] + '" style="width:80%;height:80%;"/>' };
+                        socket.emit('message', data);
+                        $('#uploadFile').val('');
+                    },
+                    error: function (err) {
+                        console.log("error !! : " + err);
+                    }
+                });
+            }
+        });
+
     });
 </script>
 </head>
@@ -106,6 +149,12 @@
                     <div class="icon"></div>
                     <div class="text" id="send">Send</div>
                 </div>
+                <form id="dataform" name="dataform" action="/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" id="uploadFile" name="uploadFile" />
+                    <!--<input type="submit" name="Upload" value="upload" />-->
+                    <input type="button" id="imgSend" name="imgSend" value="imgSend" />
+                    <!--<iframe id="uploadFrame" name="uploadFrame" style="display:none; visibility:hidden;" />-->
+                </form>
             </div>
     </div>
 
