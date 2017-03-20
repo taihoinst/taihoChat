@@ -15,10 +15,10 @@
     <script type="text/javascript" src="./javascripts/jquery.min.js"></script>
     <script type="text/javascript" src="./javascripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="./javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="../routes/topQuestion.js"></script>
+    
     <script>
         $(document).ready(function () {
-
+           
             var accordionsMenu = $('.cd-accordion-menu');
             var socket = io.connect("http://localhost:3000");
 
@@ -201,7 +201,7 @@
                 </div>-->
             </div>
             <!-- 키워드 -->
-            <div class="keyw_wrap">
+            <!--<div class="keyw_wrap">
                 <div class="keyw">
                     <ul class="cont">
                         <li>Contents - 1</li>
@@ -217,6 +217,15 @@
                         <li>Contents - 3</li>
                     </ul>
                 </div>
+            </div>-->
+            <div class="keyw_wrap">
+                <!--<script type="text/javascript" src="topQuestion.js"> document.write(topQuestionList())</script>-->
+
+                    <!--//var topQuestion = require('../routes/topQuestion.js');
+                    //topQuestion.topQuestionList();
+                    //document.write(aa);
+                    //topQuestionList();-->
+                <!--</script>-->
             </div>
             <!-- //키워드 -->
             <!-- 메세지 보내기 -->

@@ -4820,8 +4820,6 @@
     <Compile Include="node_modules\yargs\lib\validation.js" />
     <Compile Include="node_modules\yeast\index.js" />
     <Compile Include="routes\auth.js" />
-    <Compile Include="routes\server - Copy %282%29.js" />
-    <Compile Include="routes\server - Copy.js" />
     <Compile Include="routes\server.js" />
     <Compile Include="routes\index.js" />
   </ItemGroup>

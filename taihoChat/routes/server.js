@@ -16,12 +16,6 @@ var config = {
 		options: {encrypt:true, database:'taihoML'}
 };
 
-
-
-
-
-
-
     module.exports.luis = function(req, res){
     //console.log('req:' + req.body.msg);
     console.log('req:' + req);
@@ -140,17 +134,17 @@ var config = {
                         console.log('entity [ ' + i + ' ] ' + obj.entities[i].type);
                     }
                     
-                    //param += "'" + obj.entities[i].type.split("::")[1]+"',";
+                    param += "'" + obj.entities[i].type.split("::")[1]+"',";
 	        	    matchCnt++;
                 }
 
 
                 //초기 자주하는 질문 보내주는 쿼리
-                query += "SELECT TOP 3 QUESTION_VALUE   ANSWERVALUE, 100 PER  ";
-                query += "    FROM TBL_QUESTION_LIST                          ";
-                query += "   WHERE QUESTION_GRP = 1 ORDER BY NEWID() ;	    ";
+                //query += "SELECT TOP 3 QUESTION_VALUE   ANSWERVALUE, 100 PER  ";
+                //query += "    FROM TBL_QUESTION_LIST                          ";
+                //query += "   WHERE QUESTION_GRP = 1 ORDER BY NEWID() ;	    ";
 
-                console.log('param : ' + param.substr(0, param.length - 1));
+                //console.log('param : ' + param.substr(0, param.length - 1));
 
                 query += "select                                        						        ";
                 //query += "		Rely.AnswerSN,                          						    ";
