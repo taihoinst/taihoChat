@@ -11,6 +11,8 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "casperjs": "^1.1.3",
+    "cheerio": "0.22.0",
     "ejs": "2.5.6",
     "express": "3.4.4",
     "jade": "*",
@@ -18,6 +20,7 @@
     "restify": "^4.3.0",
     "socket.io": "1.7.3",
     "stylus": "*",
-    "tedious": "^1.14.0"
+    "tedious": "^1.14.0",
+    "youtube-node": "^1.3.0"
   }
 }

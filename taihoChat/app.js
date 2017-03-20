@@ -75,7 +75,7 @@ io.sockets.on('connection', function (socket) {
         if (message.recepient == 'client') {
             console.log('client input : ' + message.text);
 
-            chatServer(message.text, function (err, results) {
+            chatServer.luis(message.text, function (err, results) {
                 console.log('server server : ' + Object.keys(results).length);
 
                 var resultJson = [];
