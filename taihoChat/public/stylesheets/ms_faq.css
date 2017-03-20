@@ -64,12 +64,26 @@ input,select,textarea{font-family:맑은고딕,Malgun Gothic,AppleSDGothicNeo, s
 .chat_faq .msg{ padding: 20px;-webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px; border:solid 1px #d9d9d9;float:left}
 .chat_faq .msg li{ font-size:1.2em; line-height:22px; color:#000;text-align:left}
 
+.chat_faq .faqPr_right{ width:20%;position: relative;background-color: #e9e9e9;width:50px;height:50px;-webkit-border-radius:25px;-moz-border-radius:25px; border-radius:25px; border:solid 1px #d9d9d9; display:block; float:right; margin-left:8px; line-height:55px; text-align:center }
+.chat_faq .faqPr_right  img{ width:40px }
+.chat_faq .msg_wrap_right{width:65%; position: relative; text-align:center;float: right; }
+.chat_faq .msg_right{ padding: 20px;-webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px; border:solid 1px #d9d9d9;float:right}
+.chat_faq .msg_right li{ font-size:1.2em; line-height:22px; color:#000;text-align:left}
+
+
 .chat_user{width:100%;overflow:hidden;margin-bottom:20px; padding:0}
 .chat_user .faqPr{ width:20%;position: relative;background-color: #258903;width:30px;height:30px;-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px; display:block; float: right; margin-left:5px;line-height:38px; text-align:center}
 .chat_user .faqPr img{width:20px }
 .chat_user .msg_wrap{width:65%; position: relative; text-align:center;float: right; }
 .chat_user .msg{ padding: 20px;-webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px; background-color:#258903;float: right; }
 .chat_user .msg li{ font-size:1.2em; line-height:22px; color:#fff; text-align:left}
+
+.chat_user{width:100%;overflow:hidden;margin-bottom:20px; padding:0}
+.chat_user .faqPr_left{ width:20%;position: relative;background-color: #258903;width:30px;height:30px;-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px; display:block; float: left; margin-right:5px;line-height:38px; text-align:center}
+.chat_user .faqPr_left img{width:20px }
+.chat_user .msg_wrap_left{width:65%; position: relative; text-align:center;float: left; }
+.chat_user .msg_left{ padding: 20px;-webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px; background-color:#258903;float: left; }
+.chat_user .msg_left li{ font-size:1.2em; line-height:22px; color:#fff; text-align:left}
 
 
 .answer  { width:94%;padding:3%; height:100%; min-height:600px;  background:#cfcfcf; display:inline-block; overflow:hidden ; z-index:300; }
