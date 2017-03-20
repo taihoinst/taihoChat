@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,target-densitydpi=medium-dpi" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <title>Insert title here</title>
+    <title>Client Chat</title>
 
     <!--<link rel="stylesheet" type="text/css" href="./stylesheets/common.css" />-->
     <link type="text/css" rel="stylesheet" href="./stylesheets/ms_faq.css" media="all" />
@@ -13,12 +13,12 @@
     <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script>-->
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="./javascripts/jquery.min.js"></script>
-    <script type="text/javascript" src="./javascripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="./javascripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="./javascripts/modernizr.js"></script>
     <script type="text/javascript" src="../routes/topQuestion.js"></script>
     <script>
         $(document).ready(function () {
-            console.log('ready!!!!!!!!');
+
             var accordionsMenu = $('.cd-accordion-menu');
             var socket = io.connect("http://localhost:3000");
 
@@ -42,35 +42,13 @@
             socket.on('disconnect', function () {
                 console.log("connection end");
             });
-            
-            //window.onload = function () {
-            //    console.log('on load');
-            //    var test = '';
-            //    test += '';
-            //    test += '<div class="keyw">';
-            //    test += '<ul class="cont">';
-            //    test += '<li>Contents - 11</li>';
-            //    test += ' </ul>';
-            //    test += '</div>';
-            //    test += '<div class="keyw">';
-            //    test += '<ul class="cont">';
-            //    test += '<li>Contents - 22</li>';
-            //    test += '</ul>';
-            //    test += '</div>';
-            //    test += '<div class="keyw">';
-            //    test += '<ul class="cont">';
-            //    test += '<li>Contents - 33</li>';
-            //    test += '</ul>';
-            //    test += '</div>';
-            //    document.getElementById("keyw_wrap").innerHTML(test);
-            //};
 
             $('#send').click(function () {
                 var text = '';
                 text += ' <div class="chat_user">';
                 text += '<p class="faqPr"><img src="./images/ico_user.png" alt="user아이콘" /></p>';
                 text += '<div class="msg_wrap">';
-                text += '<ul class="msg"><li>' + $('#msg').val() + '</li></ul>';
+                text += '<ul class="msg"><li style="white-space:pre-wrap;">' + $('#msg').val() + '</li></ul>';
                 text += '</div></div>';
 
                 $('.chat_warp').append(text);
@@ -87,7 +65,7 @@
                 res += '<div class="chat_faq">';
                 res += '<p class="faqPr"><img src="./images/faq_logo.png" alt="FAQ로고" /></p>';
                 res += '<div class="msg_wrap">';
-                res += '<ul class="msg"><li>' + response.text + '</li></ul>';
+                res += '<ul class="msg"><li style="white-space:pre-wrap;">' + response.text + '</li></ul>';
                 res += '</div></div>';
 
                 $('.chat_warp').append(res);
@@ -96,7 +74,7 @@
                 //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
             });
 
-            /* 원본
+            /* 원본1
             var socket = io.connect("http://localhost:3000");
 
             socket.on('connect', function () {
@@ -212,7 +190,6 @@
                         </ul>
                     </div>
                 </div>-->
-
                 <!-- USER chat msg -->
                 <!--<div class="chat_user">
                     <p class="faqPr"><img src="./images/ico_user.png" alt="user아이콘" /></p>
@@ -266,33 +243,33 @@
         <!-- // contents end  -->
     </div>
 
-            <!-- 원본
-            <div class="chat_window">
-                <div class="top_menu">
-                    <div class="buttons">
-                        <div class="button close"></div>
-                        <div class="button minimize"></div>
-                        <div class="button maximize"></div>
-                    </div>
-                    <div class="title">FAQ Chat</div>
-                </div>
-                <ul class="messages"></ul>
-                <div class="bottom_wrapper clearfix">
-                    <div class="message_input_wrapper">
-                        <input class="message_input" placeholder="Type your message here..." id="msg" />
-                    </div>
-                    <div class="send_message">
-                        <div class="icon"></div>
-                        <div class="text" id="send">Send</div>
-                    </div>
-                    <form id="dataform" name="dataform" action="/upload" method="post" enctype="multipart/form-data">
-                        <input type="file" id="uploadFile" name="uploadFile" />
-                        <input type="submit" name="Upload" value="upload" />
-                        <input type="button" id="imgSend" name="imgSend" value="imgSend" />
-                        <iframe id="uploadFrame" name="uploadFrame" style="display:none; visibility:hidden;" />
-                    </form>
-                </div>
+    <!-- 원본
+    <div class="chat_window">
+        <div class="top_menu">
+            <div class="buttons">
+                <div class="button close"></div>
+                <div class="button minimize"></div>
+                <div class="button maximize"></div>
             </div>
-            -->
+            <div class="title">FAQ Chat</div>
+        </div>
+        <ul class="messages"></ul>
+        <div class="bottom_wrapper clearfix">
+            <div class="message_input_wrapper">
+                <input class="message_input" placeholder="Type your message here..." id="msg" />
+            </div>
+            <div class="send_message">
+                <div class="icon"></div>
+                <div class="text" id="send">Send</div>
+            </div>
+            <form id="dataform" name="dataform" action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" id="uploadFile" name="uploadFile" />
+                <input type="submit" name="Upload" value="upload" />
+                <input type="button" id="imgSend" name="imgSend" value="imgSend" />
+                <iframe id="uploadFrame" name="uploadFrame" style="display:none; visibility:hidden;" />
+            </form>
+        </div>
+    </div>
+    -->
 </body>
 </html>

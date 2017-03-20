@@ -1,13 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-<link rel='stylesheet' href="./stylesheets/commonServer.css"/>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script>
-<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-<script>
+    <meta charset="EUC-KR">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,target-densitydpi=medium-dpi" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Server Chat</title>
+
+    <!--<link rel='stylesheet' href="./stylesheets/commonServer.css"/>-->
+    <link type="text/css" rel="stylesheet" href="./stylesheets/ms_faq.css" media="all" />
+
+    <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script>-->
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="./javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="./javascripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="./javascripts/modernizr.js"></script>
+    <script>
     $(document).ready(function () {
+
+        var accordionsMenu = $('.cd-accordion-menu');
+        var socket = io.connect("http://localhost:3000");
+
+        if (accordionsMenu.length > 0) {
+
+            accordionsMenu.each(function () {
+                var accordion = $(this);
+                //detect change in the input[type="checkbox"] value
+                accordion.on('change', 'input[type="checkbox"]', function () {
+                    var checkbox = $(this);
+                    //console.log(checkbox.prop('checked'));
+                    (checkbox.prop('checked')) ? checkbox.siblings('ul').attr('style', 'display:none;').slideDown(300) : checkbox.siblings('ul').attr('style', 'display:block;').slideUp(300);
+                });
+            });
+        }
+
+        socket.on('connect', function () {
+            console.log("connection success");
+        });
+
+        socket.on('disconnect', function () {
+            console.log("connection end");
+        });
+
+        $('#send').click(function () {
+            var text = '';
+            text += '<div class="chat_faq">';
+            text += '<p class="faqPr"><img src="./images/faq_logo.png" alt="FAQ로고" /></p>';
+            text += '<div class="msg_wrap">';
+            text += '<ul class="msg"><li style="white-space:pre-wrap;">' + $('#msg').val() + '</li></ul>';
+            text += '</div></div>';
+
+            $('.chat_warp').append(text);
+
+            var data = { recepient: "admin", text: $('#msg').val() };
+            socket.emit('message', data);
+            $('#msg').val('');
+            $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
+            //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+            //$("#msg2").empty();
+        });
+
+        socket.on('response', function (response) {
+            var res = '';
+            res += ' <div class="chat_user">';
+            res += '<p class="faqPr"><img src="./images/ico_user.png" alt="user아이콘" /></p>';
+            res += '<div class="msg_wrap">';
+            res += '<ul class="msg"><li style="white-space:pre-wrap;">' + response.text + '</li></ul>';
+            res += '</div></div>';
+
+            $('.chat_warp').append(res);
+
+            $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
+            //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+        });
+
+        /*
         var socket = io.connect("http://localhost:3000");
 
         socket.on('connect', function () {
@@ -127,12 +194,81 @@
                 });
             }
         });
-
+        */
     });
-</script>
+    </script>
 </head>
 <body>
-    <div class="chat_window" style="float:left">
+    <div id="wrapper">
+
+        <!-- Header  -->
+        <div class="header"><a href="#" class="logo"><span class="hc">로고</span></a></div>
+        <!--// Header  -->
+        <!-- contents -->
+        <div class="contents" style="height:100%;">
+            <div class="chat_warp" style="max-height:62%; overflow-y:auto;">
+                <!-- FAQ chat msg -->
+                <!--<div class="chat_faq">1
+                    <p class="faqPr"><img src="./images/faq_logo.png" alt="FAQ로고" /></p>
+                    <div class="msg_wrap">
+                        <ul class="msg">
+                            <li>금융결제원 인증서는 은행 거래를 기반으로 발급되므로 반드시은행을 방문하여 인터넷 뱅킹을  먼저 신청한 후 해당 은행 홈페이지에서 발급 받아야 합니다.</li>
+                        </ul>
+                    </div>
+                </div>-->
+                <!-- USER chat msg -->
+                <!--<div class="chat_user">
+                    <p class="faqPr"><img src="./images/ico_user.png" alt="user아이콘" /></p>
+                    <div class="msg_wrap">
+                        <ul class="msg">
+                            <li>인증서 신청은 어떻게 하나요?</li>
+                        </ul>
+                    </div>
+                </div>-->
+            </div>
+            <!-- 키워드 -->
+            <div class="keyw_wrap">
+                <div class="keyw">
+                    <ul class="cont">
+                        <li>Contents - 1</li>
+                    </ul>
+                </div>
+                <div class="keyw">
+                    <ul class="cont">
+                        <li>Contents - 2</li>
+                    </ul>
+                </div>
+                <div class="keyw">
+                    <ul class="cont">
+                        <li>Contents - 3</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- //키워드 -->
+            <!-- 메세지 보내기 -->
+            <ul class="cd-accordion-menu animated">
+                <!--<ul class="cd-accordion-menu animated exp"> textarea 4줄일때-->
+                <li class="has-children" style="background-color:#fff">
+                    <input type="checkbox" name="group-2" id="group-2">
+                    <label for="group-2"></label><textarea name="" class="msgt" id="msg" cols="" rows="4" placeholder="Type your message here..."></textarea> <a href="#" id="send" class="btn_send">Send</a>
+                    <!--<label for="group-2"  class="exp" ></label><textarea name="" class="msgt exp"  cols="" rows="4" placeholder="내용을 입력하세요!"  ></textarea> <a href="#" class="btn_send">전송</a>  textarea 4줄일때 -->
+                    <ul>
+                        <li>
+                            <div class='answer'>
+                                <p><a href="#" class="att_img"><img src="./images/ico_attimg.png" alt="사진" /></a><span>Image</span></p>
+                                <p><a href="#" class="att_map"><img src="./images/ico_map.png" alt="지도" /></a><span>Map</span></p>
+                                <p><a href="#" class="att_voice"><img src="./images/ico_voice.png" alt="음성메세지" /></a><span>Voice</span></p>
+                                <p><a href="#" class="att_file"><img src="./images/ico_file.png" alt="파일" /></a><span>File</span></p>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!--// 메세지 보내기 -->
+        </div>
+        <!-- // contents end  -->
+    </div>
+    <!--<div class="chat_window" style="float:left">
         <div class="top_menu">
             <div class="buttons">
             <div class="button close"></div>
@@ -151,9 +287,9 @@
                 </div>
                 <form id="dataform" name="dataform" action="/upload" method="post" enctype="multipart/form-data">
                     <input type="file" id="uploadFile" name="uploadFile" />
-                    <!--<input type="submit" name="Upload" value="upload" />-->
+                    <input type="submit" name="Upload" value="upload" />
                     <input type="button" id="imgSend" name="imgSend" value="imgSend" />
-                    <!--<iframe id="uploadFrame" name="uploadFrame" style="display:none; visibility:hidden;" />-->
+                    <iframe id="uploadFrame" name="uploadFrame" style="display:none; visibility:hidden;" />
                 </form>
             </div>
     </div>
@@ -161,7 +297,7 @@
     <div class="chat_window2">
         <ul class="messages2" id="msg2">
         </ul>
-    </div>
+    </div>-->
 
 </body>
 </html>
