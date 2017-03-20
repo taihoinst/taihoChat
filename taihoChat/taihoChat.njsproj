@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
+    <Compile Include="routes\topQuestion.js" />
     <Content Include="node_modules\.bin\acorn" />
     <Content Include="node_modules\.bin\acorn.cmd" />
     <Content Include="node_modules\.bin\bunyan" />

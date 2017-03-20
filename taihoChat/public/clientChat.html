@@ -15,9 +15,10 @@
     <script type="text/javascript" src="./javascripts/jquery.min.js"></script>
     <script type="text/javascript" src="./javascripts/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="./javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="../routes/topQuestion.js"></script>
     <script>
         $(document).ready(function () {
-            
+            console.log('ready!!!!!!!!');
             var accordionsMenu = $('.cd-accordion-menu');
             var socket = io.connect("http://localhost:3000");
 
@@ -41,6 +42,28 @@
             socket.on('disconnect', function () {
                 console.log("connection end");
             });
+            
+            //window.onload = function () {
+            //    console.log('on load');
+            //    var test = '';
+            //    test += '';
+            //    test += '<div class="keyw">';
+            //    test += '<ul class="cont">';
+            //    test += '<li>Contents - 11</li>';
+            //    test += ' </ul>';
+            //    test += '</div>';
+            //    test += '<div class="keyw">';
+            //    test += '<ul class="cont">';
+            //    test += '<li>Contents - 22</li>';
+            //    test += '</ul>';
+            //    test += '</div>';
+            //    test += '<div class="keyw">';
+            //    test += '<ul class="cont">';
+            //    test += '<li>Contents - 33</li>';
+            //    test += '</ul>';
+            //    test += '</div>';
+            //    document.getElementById("keyw_wrap").innerHTML(test);
+            //};
 
             $('#send').click(function () {
                 var text = '';

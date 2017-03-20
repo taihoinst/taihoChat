@@ -1,6 +1,6 @@
 ﻿var request = require('request');
 var cheerio = require('cheerio');
-var auth = require("./auth");
+//var auth = require("./auth");
 var Connection = require('tedious').Connection;
 var tediousRequest = require('tedious').Request;  
 var TYPES = require('tedious').TYPES; 
