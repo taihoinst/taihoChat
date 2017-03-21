@@ -9,7 +9,7 @@ var http = require('http');
 var path = require('path');
 var socketio = require("socket.io");
 var chatServer = require("./routes/server");
-var top = require("./routes/topQuestion");
+//var top = require("./routes/topQuestion");
 var fs = require('fs');
 
 var app = express();
@@ -78,7 +78,7 @@ io.sockets.on('connection', function (socket) {
     //console.log('path : '+path);
     console.log('connection info : ', socket.request.connection._peername);
 
-    console.log(top.topQuestionList());
+    //console.log(top.topQuestionList());
 
     socket.on('message', function (message) {
         console.log('message : ', message.recepient);
