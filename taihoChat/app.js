@@ -28,6 +28,7 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'routes')));
 //app.use('/static', express.static(__dirname + '/routes'));
 //app.use('/js', express.static(path.join(__dirname, 'public/javascripts')));
 
@@ -87,20 +88,27 @@ io.sockets.on('connection', function (socket) {
 
             //chatServer.top(message.text, function (err, results) {
             chatServer.luis(message.text, function (err, results) {
-                console.log('server server : ' + Object.keys(results).length);
 
-                var resultJson = [];
-                var obj = {};
-                for (var n = 0; n < Object.keys(results).length; n++) {
+                console.log('server results : ' + results);
+                //console.log('server server : ' + Object.keys(results).length);
+
+                if (results == "" || results == null) {
+                    socket.broadcast.emit('response', message);
+                }
+                else {
+                    var resultJson = [];
                     var obj = {};
-                    console.log('[' + n + '] : ' + results[n].PER + "% " + results[n].ANSWERVALUE);
-                    obj["result"] = results[n].PER + "% " + results[n].ANSWERVALUE;
-                    resultJson.push(obj);
-                };
+                    for (var n = 0; n < Object.keys(results).length; n++) {
+                        var obj = {};
+                        console.log('[' + n + '] : ' + results[n].PER + "% " + results[n].ANSWERVALUE);
+                        obj["result"] = results[n].PER + "% " + results[n].ANSWERVALUE;
+                        resultJson.push(obj);
+                    };
 
-                console.log(resultJson);
-                message.js = resultJson;
-                socket.broadcast.emit('response', message);
+                    console.log(resultJson);
+                    message.js = resultJson;
+                    socket.broadcast.emit('response', message);
+                }
             });
 
         } else if (message.recepient == 'admin') {
