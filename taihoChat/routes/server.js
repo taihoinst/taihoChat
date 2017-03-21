@@ -9,7 +9,7 @@ var param = "";
 var typeParam = "";
 var intentTmp = "";
 var paramTmp = "";
-var query = "";
+var faqQuery = "";
 var itemQuery = "";
 var matchCnt = 0;
 var reQuestion = false;
@@ -33,7 +33,7 @@ var config = {
 		}
 		
 		// Configure the request
-    var options = {
+    var luisOptions = {
         url: 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/c6dc383e-9f64-453f-92b1-ae857ca41ce0?subscription-key=7489b95cf3fb4797939ea70ce94a4b11',
         method: 'GET',
         headers: headers,
@@ -49,14 +49,14 @@ var config = {
 
     
 
-	request(options, function (error, response, body) {    
+    request(luisOptions, function (error, response, body) {    
 	        if (!error && response.statusCode == 200) {
 	            // Print out the response body
                 typeParam = "";
-                console.log('param : ' + param);
-                console.log('param temp : ' + paramTmp);
-                console.log('REQ :  '+ req);
-                console.log("reQuestion : "+ reQuestion);
+                //console.log('param : ' + param);
+                //console.log('param temp : ' + paramTmp);
+                //console.log('REQ :  '+ req);
+                //console.log("reQuestion : "+ reQuestion);
 	            var obj = JSON.parse(body);
                 var intent = "";
                 var score = 0;
@@ -70,7 +70,7 @@ var config = {
                 //else
                 if (intent == '아이템' || intentTmp == '아이템') {
                     var connection = new Connection(config);
-                    
+
 
                     var itemNm = "";
                     var itemObj = {};
@@ -89,7 +89,7 @@ var config = {
                                     paramTmp += obj.entities[i].entity + ",";
                                     itemNm = obj.entities[i].entity;
 
-                                }else {
+                                } else {
                                     param += obj.entities[i].type.split("::")[1] + ",";
                                     paramTmp += obj.entities[i].type.split("::")[1] + ",";
                                 }
@@ -106,7 +106,7 @@ var config = {
                         console.log('typeParam : ' + typeParam);
                         typeParam = typeParam.substr(0, typeParam.length - 1);
 
-                        if(typeParam.match(/이름/g) == "" || typeParam.match(/이름/g) == null || typeParam.match(/이름/g) == undefined) {
+                        if (typeParam.match(/이름/g) == "" || typeParam.match(/이름/g) == null || typeParam.match(/이름/g) == undefined) {
                             console.log("불완전 질문 ");
                             console.log("param : " + param);
                             console.log("paramTmp : " + paramTmp);
@@ -125,13 +125,17 @@ var config = {
                             console.log("paramTmp : " + paramTmp);
 
 
-                            
+
                             connection.on('connect', function (err) {
                                 console.log('Connected');
                                 itemQuery = "";
-                                itemQuery += "SELECT ITEM_NAME, IMG_PATH, ITEM_GB   ";
-                                itemQuery += "  FROM TBL_ITEM_RECIPE_LIST           ";
-                                itemQuery += " WHERE ITEM_NAME = '" + itemNm.replace(/ /g, '') + "' ;	";
+                                itemQuery += "SELECT                                                    ";
+                                itemQuery += "		B.ITEM_NAME,                                        ";
+                                itemQuery += "		B.IMG_PATH                                          ";
+                                itemQuery += " FROM TBL_ITEM_RECIPE_LIST A,                             ";
+                                itemQuery += "	  TBL_ITEM_RECIPE_LIST B                                ";
+                                itemQuery += "WHERE REPLACE(A.ITEM_NAME,' ','') = '" + itemNm.replace(/ /g, '') + "'    ";
+                                itemQuery += "  AND A.ITEM_ID = B.ITEM_ID;						        ";
                                 console.log("itemQuery : " + itemQuery);
                                 executeStatement(itemQuery);
                             });
@@ -146,15 +150,19 @@ var config = {
                         }
                     }
                     else {
-                        paramTmp +=  req;
+                        paramTmp += req;
                         console.log("REQ  paramTmp : " + paramTmp);
 
                         connection.on('connect', function (err) {
                             console.log('Connected');
                             itemQuery = "";
-                            itemQuery += "SELECT ITEM_NAME, IMG_PATH, ITEM_GB   ";
-                            itemQuery += "  FROM TBL_ITEM_RECIPE_LIST           ";
-                            itemQuery += " WHERE ITEM_NAME = '" + req.replace(/ /g, '') + "' ;	";
+                            itemQuery += "SELECT                                                    ";
+                            itemQuery += "		B.ITEM_NAME,                                        ";
+                            itemQuery += "		B.IMG_PATH                                          ";
+                            itemQuery += " FROM TBL_ITEM_RECIPE_LIST A,                             ";
+                            itemQuery += "	  TBL_ITEM_RECIPE_LIST B                                ";
+                            itemQuery += "WHERE REPLACE(A.ITEM_NAME,' ','') = '" + req.replace(/ /g, '') + "'    ";
+                            itemQuery += "  AND A.ITEM_ID = B.ITEM_ID;						        ";
                             console.log("itemQuery : " + itemQuery);
                             executeStatement(itemQuery);
                         });
@@ -165,8 +173,6 @@ var config = {
 
                     }
 
-
-
                     if (!reQuestion) {
                         intentTmp = "";
                         typeParam = "";
@@ -176,7 +182,43 @@ var config = {
                         param = "";
                     }
                 }
+                else if (intent == 'FaQ') {
 
+                    for (var i = 0; i < Object.keys(obj.entities).length; i++) {
+                        console.log('SIZE : ' + Object.keys(obj.entities[i].type.split("::")).length);
+                        console.log('entity [ ' + i + ' ] ' + obj.entities[i].entity);
+                        if (Object.keys(obj.entities[i].type.split("::")).length > 1) {
+                            console.log('entity [ ' + i + ' ] ' + obj.entities[i].type.split("::")[0] + '||' + obj.entities[i].type.split("::")[1]);
+                        }
+                        else {
+                            console.log('entity [ ' + i + ' ] ' + obj.entities[i].type);
+                        }
+
+                        param += "'" + obj.entities[i].type.split("::")[1] + "',";
+                        matchCnt++;
+                    }
+                    faqQuery = "";
+                    faqQuery += "  SELECT                              											";
+                    //faqQuery += "	RELY.ANSWER_SN,                          						            ";
+                    //faqQuery += "	COUNT(RELY.ANSWER_SN) AS CNT ,           						            ";
+                    faqQuery += "		MIN(ANS.ANSWER_VALUE) AS ANSWERVALUE,							        ";
+                    faqQuery += "		(CONVERT(FLOAT,(COUNT(RELY.ANSWER_SN)))/" + matchCnt + ")*100 PER	    ";
+                    faqQuery += "  FROM TBL_RELATION_LIST RELY, TBL_ANSWER_LIST ANS, TBL_ENTITY_LIST ENT        ";
+                    faqQuery += "  WHERE ENT.ENTOTY_VALUE IN (" + param.substr(0, param.length - 1) + ") 	    ";
+                    faqQuery += "    AND RELY.ANSWER_SN = ANS.ANSWER_SN          						        ";
+                    faqQuery += "    AND RELY.ENTITY_SN = ENT.ENTITY_SN          						        ";
+                    faqQuery += "  GROUP BY RELY.ANSWER_SN                      						        ";
+                    faqQuery += " HAVING (COUNT(RELY.ANSWER_SN)) >= " + matchCnt/2+"                            ";
+                    faqQuery += "  ORDER BY COUNT(RELY.ANSWER_SN) DESC;                                         ";
+
+                    console.log('query : ' + faqQuery);
+
+                    var connection = new Connection(config);
+                    connection.on('connect', function (err) {
+                        console.log('Connected');
+                        executeStatement(faqQuery);
+                    });
+                }
 
 
                 function executeStatement(queryStr) {
@@ -194,8 +236,6 @@ var config = {
                             if (column.value === null) {
                                 console.log('NULL');
                             } else {
-                                //console.log(column.value);
-                                //result += column.value + " ";
                                 obj[column.metadata.colName] = column.value;
                             }
                         });
@@ -203,12 +243,8 @@ var config = {
                     });
 
                     requests.on('doneProc', function (rowCount, more) {
-                        //console.log(rowCount + ' rows returned');
-                        //console.log(result);
                         console.log('LAST : ' + jsonArray);
-                        //result = "\n\n";
-                        param = "";
-                        query = "";
+                        //param = "";
                         matchCnt = 0;
                         res(null, jsonArray);
                     });
