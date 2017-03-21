@@ -28,6 +28,11 @@
                 //detect change in the input[type="checkbox"] value
                 accordion.on('change', 'input[type="checkbox"]', function () {
                     var checkbox = $(this);
+                    if (checkbox.prop('checked')) {
+                        $('.cd-accordion-menu').css('z-index', '4');
+                    } else {
+                        $('.cd-accordion-menu').css('z-index', '0');
+                    }
                     //console.log(checkbox.prop('checked'));
                     (checkbox.prop('checked')) ? checkbox.siblings('ul').attr('style', 'display:none;').slideDown(300) : checkbox.siblings('ul').attr('style', 'display:block;').slideUp(300);
                 });
@@ -72,6 +77,30 @@
 
             $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
             //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+            
+            if (response.js != "") {
+
+                var rslt = '';
+                var json = response.js;
+                $('.keyw_wrap').html('');
+                for (var i = 0 ; i < json.length; i++) {
+
+                    var persentTemp = json[i].result.split('% ')[0];
+                    var persent = persentTemp.indexOf('.') != -1 ? parseFloat(persentTemp).toFixed(2) : persentTemp ;
+                    var contents = json[i].result.split('% ')[1];
+
+                    rslt += '<div class="keyw">';
+                    rslt += '<ul class="cont">';
+                    rslt += '<li>[' + persent + '%] ' + contents + '</li>';
+                    rslt += '</ul></div>';
+                }
+                $('.keyw_wrap').append(rslt);
+            }
+            $('.keyw').click(function () {
+                console.log($(this).html());
+                $('#msg').val($(this).find('li').text().split('] ')[1].trim()).focus();
+                $('#send').click();
+            });
         });
 
         /*
@@ -227,7 +256,7 @@
                 </div>-->
             </div>
             <!-- 키워드 -->
-            <div class="keyw_wrap">
+            <div class="keyw_wrap" style="z-index:3;"> 
                 <div class="keyw">
                     <ul class="cont">
                         <li>Contents - 1</li>
@@ -242,7 +271,7 @@
                     <ul class="cont">
                         <li>Contents - 3</li>
                     </ul>
-                </div>
+                </div>              
             </div>
             <!-- //키워드 -->
             <!-- 메세지 보내기 -->
