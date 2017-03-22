@@ -111,8 +111,8 @@
                     if (Object.keys(json[i]).indexOf('item') != -1) {
                         var itemName = json[i].item.split('% ')[0];
                         var imgPath = json[i].item.split('% ')[1];
-                        if(i != 0)
-                            img += '<img src="' + imgPath + '" />';
+
+                        img += '<img src="' + imgPath + '" />';
 
                     }
                 }
