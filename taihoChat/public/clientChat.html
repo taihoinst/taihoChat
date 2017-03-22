@@ -50,21 +50,26 @@
                 console.log("connection end");
             });
 
-            $('#send').click(function () {
-                var text = '';
-                text += ' <div class="chat_user">';
-                text += '<p class="faqPr"><img src="./images/ico_user.png" alt="user아이콘" /></p>';
-                text += '<div class="msg_wrap">';
-                text += '<ul class="msg"><li style="white-space:pre-wrap;">' + $('#msg').val() + '</li></ul>';
-                text += '</div></div>';
+            $('#send').click(function (e) {
+                if($('#msg').val().length != 0){
+                    var text = '';
+                    text += ' <div class="chat_user">';
+                    text += '<p class="faqPr"><img src="./images/ico_user.png" alt="user아이콘" /></p>';
+                    text += '<div class="msg_wrap">';
+                    text += '<ul class="msg"><li style="white-space:pre-wrap;">' + $('#msg').val() + '</li></ul>';
+                    text += '</div></div>';
 
-                $('.chat_warp').append(text);
+                    $('.chat_warp').append(text);
 
-                var data = { recepient: "client", text: $('#msg').val() };
-                socket.emit('message', data);
-                $('#msg').val('');
-                $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
-                //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+                    var data = { recepient: "client", text: $('#msg').val() };
+                    socket.emit('message', data);
+                    $('#msg').val('').focus();
+                    $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
+                    //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+                    $('#send').css('background-color', 'gray');
+                } else {
+                    
+                }
             });
 
             socket.on('response', function (response) {
@@ -79,6 +84,24 @@
 
                 $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
                 //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+            });
+
+            $("#msg").keydown(function (key) {
+
+                if (key.keyCode == 13 && !key.shiftKey) {
+                    key.preventDefault();
+                    $('#send').click();
+                    $("#msg").val('').focus();
+                }
+            });
+
+            $('#send').css('background-color', 'gray');
+            $("#msg").keyup(function (key) {
+                if ($('#msg').val().trim().length <= 0) {
+                    $('#send').css('background-color', 'gray');
+                } else {
+                    $('#send').css('background-color', '#f47321');
+                }
             });
 
             /* 원본
