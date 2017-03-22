@@ -58,7 +58,7 @@
 
                 var data = { recepient: "client", text: $('#msg').val() };
                 socket.emit('message', data);
-                $('#msg').val('');
+                $('#msg').val('').focus();
                 $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
                 //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
             });
@@ -76,6 +76,15 @@
                 $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
                 //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
             });
+
+            $("#msg").keydown(function (key) {
+
+                if (key.keyCode == 13 && !key.shiftKey) {
+                    key.preventDefault();
+                    $('#send').click();
+                    $("#msg").val('').focus();
+                }
+            })
 
             /* ¿øº»
             var socket = io.connect("http://localhost:3000");

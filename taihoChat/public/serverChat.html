@@ -59,7 +59,7 @@
 
             var data = { recepient: "admin", text: $('#msg').val() };
             socket.emit('message', data);
-            $('#msg').val('');
+            $('#msg').val('').focus();
             $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
             //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
             //$("#msg2").empty();
@@ -89,19 +89,34 @@
                     var persent = persentTemp.indexOf('.') != -1 ? parseFloat(persentTemp).toFixed(2) : persentTemp ;
                     var contents = json[i].result.split('% ')[1];
 
-                    rslt += '<div class="keyw">';
-                    rslt += '<ul class="cont">';
-                    rslt += '<li>[' + persent + '%] ' + contents + '</li>';
-                    rslt += '</ul></div>';
+                    if (persent == '0') {
+                        $('#msg').val(contents);
+                        $('#send').click();
+                    } else {
+                        rslt += '<div class="keyw">';
+                        rslt += '<ul class="cont">';
+                        rslt += '<li>[' + persent + '%] ' + contents + '</li>';
+                        rslt += '</ul></div>';
+                    }
                 }
                 $('.keyw_wrap').append(rslt);
             }
+
             $('.keyw').click(function () {
                 console.log($(this).html());
                 $('#msg').val($(this).find('li').text().split('] ')[1].trim()).focus();
                 $('#send').click();
-            });
+            });           
         });
+
+        $("#msg").keydown(function (key) {
+
+            if (key.keyCode == 13 && !key.shiftKey) {
+                key.preventDefault();
+                $('#send').click();
+                $("#msg").val('').focus();
+            }
+        })
 
         /*
         var socket = io.connect("http://localhost:3000");
