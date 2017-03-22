@@ -71,6 +71,7 @@
         });
 
         socket.on('response', function (response) {
+            
             var res = '';
             res += ' <div class="chat_user">';
             res += '<p class="faqPr_left"><img src="./images/ico_user.png" alt="user¾ÆÀÌÄÜ" /></p>';
@@ -86,25 +87,40 @@
             if (response.js != "") {
 
                 var rslt = '';
+                var img = '';
                 var json = response.js;
                 $('.keyw_wrap').html('');
+                
                 for (var i = 0 ; i < json.length; i++) {
+                    if (Object.keys(json[i]).indexOf('result') != -1) {
+                        var persentTemp = json[i].result.split('% ')[0];
+                        var persent = persentTemp.indexOf('.') != -1 ? parseFloat(persentTemp).toFixed(2) : persentTemp;
+                        var contents = json[i].result.split('% ')[1];
 
-                    var persentTemp = json[i].result.split('% ')[0];
-                    var persent = persentTemp.indexOf('.') != -1 ? parseFloat(persentTemp).toFixed(2) : persentTemp ;
-                    var contents = json[i].result.split('% ')[1];
+                        if (persent == '0') {
+                            $('#msg').val(contents);
+                            $('#send').click();
+                        } else {
+                            rslt += '<div class="keyw">';
+                            rslt += '<ul class="cont">';
+                            rslt += '<li>[' + persent + '%] ' + contents + '</li>';
+                            rslt += '</ul></div>';
+                        }
+                    }
 
-                    if (persent == '0') {
-                        $('#msg').val(contents);
-                        $('#send').click();
-                    } else {
-                        rslt += '<div class="keyw">';
-                        rslt += '<ul class="cont">';
-                        rslt += '<li>[' + persent + '%] ' + contents + '</li>';
-                        rslt += '</ul></div>';
+                    if (Object.keys(json[i]).indexOf('item') != -1) {
+                        var itemName = json[i].item.split('% ')[0];
+                        var imgPath = json[i].item.split('% ')[1];
+                        if(i != 0)
+                            img += '<img src="' + imgPath + '" />';
+
                     }
                 }
                 $('.keyw_wrap').append(rslt);
+                if (img != '') {
+                    $('#msg').val(img).focus();
+                    $('#send').click();
+                }
             }
 
             $('.keyw').click(function () {

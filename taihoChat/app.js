@@ -99,9 +99,16 @@ io.sockets.on('connection', function (socket) {
                     var resultJson = [];
                     var obj = {};
                     for (var n = 0; n < Object.keys(results).length; n++) {
-                        var obj = {};
-                        console.log('[' + n + '] : ' + results[n].PER + "% " + results[n].ANSWERVALUE);
-                        obj["result"] = results[n].PER + "% " + results[n].ANSWERVALUE;
+                        var obj = {};            
+                        
+                        if (results[n].PER != undefined) {
+                            console.log('[' + n + '] : ' + results[n].PER + "% " + results[n].ANSWERVALUE);
+                            obj["result"] = results[n].PER + "% " + results[n].ANSWERVALUE;
+                        }
+                        if (results[n].ITEM_NAME != undefined) {
+                            console.log('[' + n + '] : ' + results[n].ITEM_NAME + "% " + results[n].IMG_PATH);
+                            obj["item"] = results[n].ITEM_NAME + "% " + results[n].IMG_PATH
+                        }
                         resultJson.push(obj);
                     };
 
