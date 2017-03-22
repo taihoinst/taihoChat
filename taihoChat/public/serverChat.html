@@ -48,21 +48,26 @@
         });
 
         $('#send').click(function () {
-            var text = '';
-            text += '<div class="chat_faq">';
-            text += '<p class="faqPr_right"><img src="./images/faq_logo.png" alt="FAQ로고" /></p>';
-            text += '<div class="msg_wrap_right">';
-            text += '<ul class="msg_right"><li style="white-space:pre-wrap;">' + $('#msg').val() + '</li></ul>';
-            text += '</div></div>';
+            if ($('#msg').val().length != 0) {
+                var text = '';
+                text += '<div class="chat_faq">';
+                text += '<p class="faqPr_right"><img src="./images/faq_logo.png" alt="FAQ로고" /></p>';
+                text += '<div class="msg_wrap_right">';
+                text += '<ul class="msg_right"><li style="white-space:pre-wrap;">' + $('#msg').val() + '</li></ul>';
+                text += '</div></div>';
 
-            $('.chat_warp').append(text);
+                $('.chat_warp').append(text);
 
-            var data = { recepient: "admin", text: $('#msg').val() };
-            socket.emit('message', data);
-            $('#msg').val('').focus();
-            $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
-            //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
-            //$("#msg2").empty();
+                var data = { recepient: "admin", text: $('#msg').val() };
+                socket.emit('message', data);
+                $('#msg').val('').focus();
+                $(".chat_warp").scrollTop($(".chat_warp")[0].scrollHeight);
+                //$('#chat_window').animate({ scrollTop: $('#chat_window').prop("scrollHeight") }, 500);
+                //$("#msg2").empty();
+                $('#send').css('background-color', 'gray');
+            } else {
+                
+            }
         });
 
         socket.on('response', function (response) {
@@ -108,15 +113,23 @@
                 $('#send').click();
             });           
         });
-
+    
         $("#msg").keydown(function (key) {
-
             if (key.keyCode == 13 && !key.shiftKey) {
                 key.preventDefault();
                 $('#send').click();
                 $("#msg").val('').focus();
             }
-        })
+        });
+
+        $('#send').css('background-color', 'gray');
+        $("#msg").keyup(function (key) {
+            if ($('#msg').val().trim().length <= 0) {
+                $('#send').css('background-color', 'gray');
+            } else {
+                $('#send').css('background-color', '#f47321');
+            }
+        });
 
         /*
         var socket = io.connect("http://localhost:3000");
