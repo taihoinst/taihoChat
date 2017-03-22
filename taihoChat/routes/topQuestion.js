@@ -17,8 +17,9 @@ var config = {
 };
 var top = {};
 
-top.topQuestionList = function() {
-    console.log('topQuestionListtopQuestionListtopQuestionListtopQuestionList');
+top.topQuestionList = function () {
+    
+    console.log('topQuestionList!!!!!!!');
     var connection = new Connection(config);
     connection.on('connect', function (err) {
         console.log('Connected');
@@ -37,6 +38,7 @@ top.topQuestionList = function() {
 
         requests.on('row', function (columns) {
             var obj = {};
+            result = "";
             columns.forEach(function (column) {
                 if (column.value === null) {
                     console.log('NULL');
@@ -50,87 +52,23 @@ top.topQuestionList = function() {
         });
 
         requests.on('doneProc', function (rowCount, more) {
-            result = "";
+            
             query = "";
             console.log('result : ' + result);
-            return result;
+            
         });
+        
         connection.execSql(requests);
-
+        return result;
     });
-   
+   // console.log('return result : ' + result);
+    
 };
-
-//function executeStatement() {
-
-//    var jsonArray = [];
-//    var requests = new tediousRequest(query, function (err) {
-//        if (err) {
-//            console.log('ERROR : ' + err);
-//        }
-//    });
-
-//    requests.on('row', function (columns) {
-//        var obj = {};
-//        columns.forEach(function (column) {
-//            if (column.value === null) {
-//                console.log('NULL');
-//            } else {
-//                //console.log(column.value);
-//                result += '<div class="keyw"> <ul class="cont"> <li>' + column.value + '</li> </ul> </div>';
-//            }
-//            document.write(result);
-//        });
-//        // document.write(result);
-//    });
-
-//    requests.on('doneProc', function (rowCount, more) {
-//        result = "";
-//        query = "";
-//    });
-//    connection.execSql(requests);
-//}
-
 module.exports = top;
 
 
-//module.exports.topQuestionList = function (req, res) {
+//console.log('top top top top');
 
-//    console.log('topQuestionListtopQuestionListtopQuestionListtopQuestionList');
-//    var connection = new Connection(config);
-//    connection.on('connect', function (err) {
-//        console.log('Connected');
-//        executeStatement();
-//    });
-//    console.log('result : ' + result);
-//    res(null, result);
-//};
 
-//function executeStatement() {
-
-//    var jsonArray = [];
-//    var requests = new tediousRequest(query, function (err) {
-//        if (err) {
-//            console.log('ERROR : ' + err);
-//        }
-//    });
-
-//    requests.on('row', function (columns) {
-//        var obj = {};
-//        columns.forEach(function (column) {
-//            if (column.value === null) {
-//                console.log('NULL');
-//            } else {
-//                //console.log(column.value);
-//                result += '<div class="keyw"> <ul class="cont"> <li>' + column.value + '</li> </ul> </div>';
-//            }
-//        });
-//        //res(null, result);
-//    });
-
-//    requests.on('doneProc', function (rowCount, more) {
-//        result = "";
-//        query = "";
-//    });
-//    connection.execSql(requests);
-//}
+//var aa = "";
+//aa = ' <div class="keyw">   < ul class="cont" > <li>Contents - 1</li>   </ul >  </div > <div class="keyw">  <ul class="cont">   <li>Contents - 2</li>   </ul>   </div>  <div class="keyw">  <ul class="cont">   <li>Contents - 3</li>   </ul>   </div>';

@@ -18,7 +18,17 @@ var config = {
 		server:'faxtimedb.database.windows.net',
 		userName:'faxtime',
 		password:'test2016!',
-		options: {encrypt:true, database:'taihoML'}
+        options: {
+            debug: {
+                packet: false,
+                data: false,
+                patload: false,
+                token: false,
+                log: true
+            },
+            encrypt: true,
+            database: 'taihoML'
+        }
 };
 
     module.exports.luis = function(req, res){
@@ -130,6 +140,7 @@ var config = {
                                 console.log('Connected');
                                 itemQuery = "";
                                 itemQuery += "SELECT                                                    ";
+                                itemQuery += "		B.ITEM_GB,                                          ";
                                 itemQuery += "		B.ITEM_NAME,                                        ";
                                 itemQuery += "		B.IMG_PATH                                          ";
                                 itemQuery += " FROM TBL_ITEM_RECIPE_LIST A,                             ";
@@ -157,6 +168,7 @@ var config = {
                             console.log('Connected');
                             itemQuery = "";
                             itemQuery += "SELECT                                                    ";
+                            itemQuery += "		B.ITEM_GB,                                          ";
                             itemQuery += "		B.ITEM_NAME,                                        ";
                             itemQuery += "		B.IMG_PATH                                          ";
                             itemQuery += " FROM TBL_ITEM_RECIPE_LIST A,                             ";
